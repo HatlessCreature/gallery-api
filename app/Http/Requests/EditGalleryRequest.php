@@ -13,7 +13,7 @@ class EditGalleryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class EditGalleryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'sometimes|string|min:2|max:255',
+            'description' => 'sometimes|nullable|string|max:1000',
+            'images' => 'min:1',
+            'images.*.url' => 'sometimes|regex:/^(https?:)?\/\/?[^\'"<>]+?\.(jpg|jpeg|png)(.*)?$/'
         ];
     }
 }
