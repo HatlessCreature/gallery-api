@@ -34,7 +34,6 @@ class GalleryController extends Controller
                 'url' => $image->url
             ]);
         }
-        $gallery->images()->saveMany($imagesArr);
 
         return response()->json($gallery, 201);
     }
@@ -47,6 +46,15 @@ class GalleryController extends Controller
     public function update(EditGalleryRequest $request, Gallery $gallery){
         $data = $request->validated();
         $gallery->update($data);
+        $gallery->images()->delete();
+
+        $imagesArr = [];
+        foreach($request['images'] as $image) {
+            $imagesArr[] = Image::create([
+                'gallery_id' => $gallery->id,
+                'url' => $image->url
+            ]);
+        }
 
         return response()->json($gallery);
     }

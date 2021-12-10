@@ -34,7 +34,7 @@ class Gallery extends Model
             $query = $query->where('user_id', '=', $userId);
         }
 
-        if (!$term){
+        if (!$term && !$userId){
             return $query;
         }
 
