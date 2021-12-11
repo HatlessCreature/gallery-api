@@ -38,8 +38,8 @@ class GalleryController extends Controller
         return response()->json($gallery, 201);
     }
 
-    public function show(Gallery $gallery){
-        $gallery->load('images', 'user', 'comments', 'comments.user');
+    public function show($id){
+        $gallery = Gallery::with(['images', 'user', 'comments', 'comments.user'])->find($id);
         return response()->json($gallery);
     }
 
