@@ -31,7 +31,7 @@ class GalleryController extends Controller
         foreach($data['images'] as $image) {
             $imagesArr[] = Image::create([
                 'gallery_id' => $gallery->id,
-                'url' => $image->url
+                'url' => $image['url']
             ]);
         }
 
@@ -43,8 +43,9 @@ class GalleryController extends Controller
         return response()->json($gallery);
     }
 
-    public function update(EditGalleryRequest $request, Gallery $gallery){
+    public function update($id, EditGalleryRequest $request){
         $data = $request->validated();
+        $gallery = Gallery::findOrFail($id);
         $gallery->update($data);
         $gallery->images()->delete();
 
@@ -52,14 +53,14 @@ class GalleryController extends Controller
         foreach($request['images'] as $image) {
             $imagesArr[] = Image::create([
                 'gallery_id' => $gallery->id,
-                'url' => $image->url
+                'url' => $image['url']
             ]);
         }
-
         return response()->json($gallery);
     }
 
-    public function destroy(Gallery $gallery){
+    public function destroy($id){
+        $gallery = Gallery::findOrFail($id);
         $gallery->delete();
         return response()->noContent();
     }
