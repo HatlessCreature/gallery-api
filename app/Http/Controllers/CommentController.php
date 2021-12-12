@@ -10,9 +10,10 @@ use App\Models\Gallery;
 
 class CommentController extends Controller
 {
-    public function store(Gallery $gallery, CreateCommentRequest $request){
+    public function store($id, CreateCommentRequest $request){
         $data = $request->validated();
 
+        $gallery = Gallery::with(['images', 'user', 'comments', 'comments.user'])->find($id);
         $comment = new Comment;
         $comment->content = $data['content'];
         $comment->user()->associate(Auth::user());
@@ -22,8 +23,9 @@ class CommentController extends Controller
         return response()->json($comment, 201);
     }
 
-    public function destroy(Comment $comment){
+    public function destroy($id){
+        $comment = Comment::findOrFail($id);
         $comment->delete();
-        return response()->noContent();
+        return response()->json($id, 200);
     }
 }
