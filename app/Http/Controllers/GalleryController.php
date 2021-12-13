@@ -34,6 +34,7 @@ class GalleryController extends Controller
                 'url' => $image['url']
             ]);
         }
+        $gallery->load('images','user', 'comments', 'comments.user');
 
         return response()->json($gallery, 201);
     }
@@ -56,6 +57,7 @@ class GalleryController extends Controller
                 'url' => $image['url']
             ]);
         }
+        $gallery->load('images','user', 'comments', 'comments.user');
         return response()->json($gallery);
     }
 
